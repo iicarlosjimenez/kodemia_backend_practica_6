@@ -46,20 +46,22 @@ function main() {
          console.log('Eliminados!');
          break;
 
+      case 'help':
       default:
          const message = `
 Comandos aceptados
-- ls
-- add [koder]
-- rm [id_koder]
-- reset
+- help: muestra la lista de ayuda
+- ls: muestra la lista de koders
+- add [koder]: agrega un nuevo koder
+- rm [koder]: elimina un koder
+- reset: limpia la lista de koders
          `
          console.info(message);
          break;
    }
 }
 
-// Escribir inforesetción
+// Escribir información
 function updateFile(koders) {
    fs.writeFileSync(nameFile, JSON.stringify({ koders: koders }))
 }
