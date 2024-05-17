@@ -17,7 +17,7 @@ function main() {
          console.log(ls());
          break;
 
-      case 'new':
+      case 'add':
          if (koder) {
             add(koder)
             console.log('Agregado!');
@@ -29,12 +29,11 @@ function main() {
 
       case 'rm':
          if (koder) {
-            if (koder < 0 || koder >= getKoders().length) {
-               console.error('Id fuera de rago');
-            } 
-            else {
-               rm(koder)
+            if (rm(koder)) {
                console.log('Eliminado!');
+               console.log(ls());
+            } else {
+               console.error('Koder no encontrado');
                console.log(ls());
             }
          }
@@ -42,8 +41,8 @@ function main() {
             console.error('Se requiere el ID del Koder');
          break;
 
-      case 'rma':
-         rma()
+      case 'reset':
+         reset()
          console.log('Eliminados!');
          break;
 
@@ -51,16 +50,16 @@ function main() {
          const message = `
 Comandos aceptados
 - ls
-- new [koder]
+- add [koder]
 - rm [id_koder]
-- rma
+- reset
          `
          console.info(message);
          break;
    }
 }
 
-// Escribir información
+// Escribir inforesetción
 function updateFile(koders) {
    fs.writeFileSync(nameFile, JSON.stringify({ koders: koders }))
 }
@@ -75,25 +74,30 @@ function getKoders() {
 function add(koder) {
    const koders = getKoders()
    koders.push(koder)
-
    updateFile(koders)
 }
 
 // Obtener koders
 function ls() {
-   const koders = getKoders().map((koder, index) => `ID: ${index}, Koder: ${koder}`)
+   const koders = getKoders()
    return koders
 }
 
 // Eliminar koder 
-function rm(id_koder) {
+function rm(name_koder) {
    const koders = getKoders()
-   koders.splice(id_koder, 1)
-   updateFile(koders)
+   const id_koder = koders.indexOf(name_koder)
+   if (id_koder >= 0) {
+      koders.splice(id_koder, 1)
+      updateFile(koders)
+      return true
+   } else {
+      return false      
+   }
 }
 
 // Eliminar todos los koders 
-function rma() {
+function reset() {
    updateFile([])
 }
 
